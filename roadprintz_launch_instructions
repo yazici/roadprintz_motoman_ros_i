@@ -14,6 +14,8 @@
 4) launch our own variation of Eric Marcil's launch code:
    roslaunch motoman_mh50_support robot_interface_streaming_mh50.launch robot_ip:=192.168.1.31 controller:=dx200
    
+    (may ignore 2 errors complaining of topic_list parameter not found)
+   
  DEVIATIONS FROM ROS-I CODE:
    note that our edits include:
    *load yaml file for joint names
@@ -56,6 +58,15 @@ for values of starting positions, copy/paste actual joint angles from
 If robot joints move under move_to_joint command, then ROS-I is running;
   can start using ros nodes to control robot via trajectory_msgs publications
   to topic /joint_path_command
+  
+10) DIAGNOSTIC/UTILITY:  run:
+  rosrun test_jog_joints test_jog_joints
+  
+  will prompt for joint number (0 thru 5) and desired joint angle;
+  will create trajectory and send it to robot
+  will automatically use current joint poses for first point of trajectory
+  
+  
   
   
   
