@@ -17,6 +17,7 @@
 #include <Eigen/Eigen>
 #include <Eigen/Dense>
 
+#include <mh5020_fk_ik/mh5020_kinematics.h>
 
 using namespace std;
 #define VECTOR_DIM 6 // e.g., a 6-dof vector
@@ -27,8 +28,9 @@ Eigen::VectorXd g_q_vec_arm_Xd;
 vector<int> g_arm_joint_indices;
 vector<string> g_ur_jnt_names;
 //TEST: deliberately limit joint velocities to very small values
-double g_qdot_max_vec[] = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1}; //put real vel limits here
+//double g_qdot_max_vec[] = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1}; //put real vel limits here
 int ans;
+Eigen::VectorXd g_q_vec;
 
 void map_arm_joint_indices(vector<string> joint_names) {
     //vector<string> joint_names = joint_state->name;
@@ -163,10 +165,11 @@ void stuff_trajectory(std::vector<Eigen::VectorXd> qvecs, trajectory_msgs::Joint
 }
 
 
+// MAIN PROGRAM:
 int main(int argc, char** argv) 
 {
     // ROS set-ups:
-    ros::init(argc, argv, "test_jog_joints"); //node name
+    ros::init(argc, argv, "test_jog_cartesian"); //node name
 
     ros::NodeHandle nh; // create a node handle; need to pass this to the class constructor
     
@@ -175,7 +178,29 @@ int main(int argc, char** argv)
      Eigen::VectorXd q_pre_pose;
     Eigen::VectorXd q_vec_arm;
     g_q_vec_arm_Xd.resize(VECTOR_DIM);
-
+    
+    Eigen::VectorXd q_soln,q_mh5020;
+    q_soln.resize(NJNTS);
+    q_mh5020.resize(NJNTS);
+    Eigen::Vector3d O_current,O_desired;
+    Eigen::Affine3d a_tool;
+    a_tool.linear() << 1, 0, 0,
+            0, 1, 0,
+            0, 0, 1;
+    a_tool.translation() << 0.0,
+            0.0,
+            0.0;    
+    
+    MH5020_fwd_solver mh5020_fwd_solver;
+    MH5020_IK_solver ik_solver;        
+    std::vector<Eigen::VectorXd> q6dof_solns;
+    Eigen::VectorXd q_offsets_vecxd;
+    q_offsets_vecxd.resize(NJNTS);
+    for (int i=0;i<NJNTS;i++)
+      q_offsets_vecxd[i] = DH_q_offsets[i];    
+    
+    //q_in.resize(NJNTS); 
+        
     std::vector<Eigen::VectorXd> des_path;
     trajectory_msgs::JointTrajectory des_trajectory; // empty trajectory   
     set_jnt_names(); //fill a vector of joint names in DH order, from base to tip
@@ -198,26 +223,76 @@ int main(int argc, char** argv)
     cout << "current pose:" << g_q_vec_arm_Xd.transpose() << endl;
     
     //q_pre_pose is initialized to all zeros
-    int jnt=5;
+    //int jnt=5;
     double qval;
-    while(jnt>=0) {
-        cout<<"enter jnt num, 0 through 5: ";
-        cin>>jnt;
-        cout<<"enter jnt angle: ";
-        cin>>qval;
-        q_pre_pose[jnt] = qval; 
+    Eigen::Affine3d A_fwd_desired, A_fwd_test_goal;
+    while(ros::ok()) {
+        cout<<"enter 1 to get joint angles: ";
+        cin>>ans;
+        ros::spinOnce();
+        //for (int i = 0; i < NJNTS; i++) {
+        //    q_in[i] = g_q_vec[i]; // assign q to actual joint states
+        //}
+        ROS_INFO("forward kin: ");
+        Eigen::Affine3d A_fwd_DH = mh5020_fwd_solver.fwd_kin_solve(g_q_vec_arm_Xd); //fwd_kin_solve
+        //Eigen::Affine3d A_fwd_URDF = A_fwd_DH*a_tool;
+         O_current = A_fwd_DH.translation();
+        std::cout << "tool frame origin: " << O_current.transpose() << std::endl;         
+                
+        int direction_code;
+        double move_size;
+        cout<<"enter code for desired jog direction "<<endl;
+        cout<<"dx: 0,  dy: 1, dz: 2  :";
+        
+        cin>>direction_code;
+        if (direction_code<3 && direction_code> -1) {
+        
+           cout<<"enter desired displacement, in m: ";
+           cin>>move_size;
+           O_desired = O_current;
+           O_desired[direction_code] += move_size;
+           A_fwd_desired = A_fwd_DH;
+           A_fwd_desired.translation() = O_desired;
+           //compute IK for this goal:
+        int nsolns = ik_solver.ik_solve(A_fwd_desired,q6dof_solns);
+        std::cout << "number of IK solutions: " << nsolns << std::endl;
+         nsolns = q6dof_solns.size();
+        double q_err_best=1000000.0;
+        double q_err;
+        int i_min = 0;
+        Eigen::VectorXd q_soln_best = q6dof_solns[0];
+        std::cout << "found " << nsolns << " solution(s):" << std::endl;
+        for (int i = 0; i < nsolns; i++) {
+            Eigen::VectorXd q_soln = q6dof_solns[i];
+            //ik_solver.fit_joints_to_range(q_soln);
+            std::cout<<"q_soln_mh5020: "<< q_soln.transpose() << std::endl;
+            //q_mh5020 = q_soln- q_offsets_vecxd;
+            //std::cout <<"q_soln_abb:"<< q_mh5020.transpose() << std::endl;
+            //q6dof_solns[i] = q_soln;
+            q_err = (g_q_vec_arm_Xd - q_soln).norm(); 
+            if (q_err<q_err_best) {
+               q_soln_best = q_soln;
+            }
+         }
+         ROS_INFO("closest soln: ");
+         ROS_INFO_STREAM(q_soln_best.transpose()<<endl);
+         A_fwd_test_goal = mh5020_fwd_solver.fwd_kin_solve(q_soln_best); 
+         ROS_INFO("computed tool origin for IK soln: ");
+         ROS_INFO_STREAM(A_fwd_test_goal.translation().transpose()<<endl);         
+        
         des_path.clear();
         ros::spinOnce(); //update joint states
         des_path.push_back(g_q_vec_arm_Xd); //start from current pose
-        des_path.push_back(q_pre_pose); //and go to new desired pose
+        des_path.push_back(q_soln_best); //and go to new desired pose
         stuff_trajectory(des_path, des_trajectory); //convert path to traj
 
-        cout<<"enter 1 to send the trajectory command to move the arm: CAREFUL!!: ";
+        cout<<"enter 1 to send the trajectory command to move the arm: "<<endl;
+        cout<<"enter anything else to decline this command; CAREFUL!!: ";
         cin>>ans;
-        pub.publish(des_trajectory);
-        
-        ros::spinOnce();
-        cout << "arm is at: " << g_q_vec_arm_Xd.transpose() << endl;        
+        if (ans==1) {
+          pub.publish(des_trajectory);
+          }
+        }      
     }
 
     return 0;

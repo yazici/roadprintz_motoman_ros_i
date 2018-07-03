@@ -1,0 +1,22 @@
+cartesian test:
+
+similar interface, but:
+1) solve FK at current joint_states
+
+2) prompt for direction 1: dx, 2:dy 3: dz  (if not 1,2,3, reject)
+
+3) prompt for Cartesian jog value, in meters, INCREMENTAL
+
+4) solve ik for new desired pose
+    find closest soln (or constrained soln)
+    
+5) print out qvec soln 
+
+6) solve fk for soln
+
+7) display jspace joint motions to go to destination
+
+8) prompt for move OK: 1/0
+
+LOOP
+

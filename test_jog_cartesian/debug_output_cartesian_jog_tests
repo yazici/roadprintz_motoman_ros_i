@@ -1,0 +1,236 @@
+debug output from cartesian jog tests: July 3, 2018:
+
+
+
+[1]+  Terminated              rosrun test_jog_cartesian test_jog_cartesian
+wyatt@Wall-E:~/ros_ws$ rosrun test_jog_cartesian test_jog_cartesian
+[ INFO] [1530643004.544897640]:  fwd_solver constructor
+[ INFO] [1530643004.544987662]:  fwd_solver constructor
+[ WARN] [1530643004.545026386]:  IK constructor
+setting pre-pose: 
+warming up callbacks...
+[ INFO] [1530643005.552129912]: waiting for joint states...
+[ INFO] [1530643005.552431676]: finding joint mappings for 6 jnts
+indices of arm joints: 
+0, 1, 2, 3, 4, 5, 
+CB: q_vec_arm:            0    -0.165061    0.0630445            0      0.10201 -3.35558e-05
+[ INFO] [1530643006.553079660]: waiting for joint states...
+current pose:           0    -0.165061    0.0630445            0      0.10201 -3.35558e-05
+enter 1 to get joint angles: 1
+CB: q_vec_arm:            0    -0.165061    0.0630445            0      0.10201 -3.35558e-05
+[ INFO] [1530643008.601124858]: forward kin: 
+tool frame origin:      2.14497 -5.26586e-17      1.58502
+enter code for desired jog direction 
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+w_wrt_1[0],w_wrt_1[1]: 1.99997, 1.05002
+[ INFO] [1530643022.173617100]: beta,gamma = 0.483461 0.920614
+[ INFO] [1530643022.173698508]: eta, phi_elbow = 1.691100, 1.460139
+[ WARN] [1530643022.174251511]: q4 = 0.000000
+[ INFO] [1530643022.174324657]: num wrist solns: 4
+[ WARN] [1530643022.174406256]: ijnt = 3 out of range
+[ WARN] [1530643022.174486304]: ijnt = 3 out of range
+number of IK solutions: 2
+found 2 solution(s):
+q_soln_mh5020:  -1.8555e-17    -0.166721   0.00964629            0     0.157068 -3.35558e-05
+q_soln_mh5020:  -1.8555e-17    -0.166721   0.00964629            0     0.157068 -3.35558e-05
+[ INFO] [1530643022.174781580]: closest soln: 
+[ INFO] [1530643022.174919278]:  -1.8555e-17    -0.166721   0.00964629            0     0.157068 -3.35558e-05
+
+[ INFO] [1530643022.175229438]: computed tool origin for IK soln: 
+[ INFO] [1530643022.175313295]:      2.14497 -9.85817e-17      1.48502
+
+CB: q_vec_arm:            0    -0.165061    0.0630445            0      0.10201 -3.35558e-05
+stuff_traj: start pt =            0    -0.165061    0.0630445            0      0.10201 -3.35558e-05
+[ INFO] [1530643022.175604792]: stuffing trajectory
+traj pt: -1.8555e-17, -0.166721, 0.00964629, 0, 0.157068, -3.35558e-05, 
+arrival time: 0.550585
+enter 1 to send the trajectory command to move the arm: 
+enter anything else to decline this command; CAREFUL!!: 1
+enter 1 to get joint angles: 1
+CB: q_vec_arm:            0    -0.166714   0.00964395            0      0.15706 -3.35558e-05
+[ INFO] [1530643073.082019812]: forward kin: 
+tool frame origin:      2.14496 -5.87813e-17      1.48503
+enter code for desired jog direction 
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+w_wrt_1[0],w_wrt_1[1]: 1.99996, 0.950028
+[ INFO] [1530643153.605331252]: beta,gamma = 0.443467 0.954177
+[ INFO] [1530643153.605409002]: eta, phi_elbow = 1.642855, 1.460139
+[ WARN] [1530643153.605667120]: q4 = 0.000000
+[ INFO] [1530643153.605731743]: num wrist solns: 4
+[ WARN] [1530643153.605781924]: ijnt = 3 out of range
+[ WARN] [1530643153.605827133]: ijnt = 3 out of range
+number of IK solutions: 2
+found 2 solution(s):
+q_soln_mh5020: -2.14095e-17    -0.173152   -0.0385987            0      0.21174 -3.35558e-05
+q_soln_mh5020: -2.14095e-17    -0.173152   -0.0385987            0      0.21174 -3.35558e-05
+[ INFO] [1530643153.605979959]: closest soln: 
+[ INFO] [1530643153.606055791]: -2.14095e-17    -0.173152   -0.0385987            0      0.21174 -3.35558e-05
+
+[ INFO] [1530643153.606279398]: computed tool origin for IK soln: 
+[ INFO] [1530643153.606351595]:      2.14496 -1.10827e-16      1.38503
+
+CB: q_vec_arm:            0    -0.166714   0.00964395            0      0.15706 -3.35558e-05
+stuff_traj: start pt =            0    -0.166714   0.00964395            0      0.15706 -3.35558e-05
+[ INFO] [1530643153.606535990]: stuffing trajectory
+traj pt: -2.14095e-17, -0.173152, -0.0385987, 0, 0.21174, -3.35558e-05, 
+arrival time: 0.546799
+enter 1 to send the trajectory command to move the arm: 
+enter anything else to decline this command; CAREFUL!!: 1
+enter 1 to get joint angles: 1
+CB: q_vec_arm:            0    -0.173144   -0.0385933            0     0.211728 -3.35558e-05
+[ INFO] [1530643186.309228719]: forward kin: 
+tool frame origin:     2.14495 -6.4903e-17     1.38505
+enter code for desired jog direction 
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+w_wrt_1[0],w_wrt_1[1]: 1.99996, 0.850053
+[ INFO] [1530643193.493172999]: beta,gamma = 0.401901 0.984612
+[ INFO] [1530643193.493250061]: eta, phi_elbow = 1.599587, 1.460139
+[ WARN] [1530643193.493490065]: q4 = 0.000000
+[ INFO] [1530643193.493579501]: num wrist solns: 4
+[ WARN] [1530643193.493641341]: ijnt = 3 out of range
+[ WARN] [1530643193.493686333]: ijnt = 3 out of range
+number of IK solutions: 2
+found 2 solution(s):
+q_soln_mh5020: -2.42636e-17    -0.184283   -0.0818666            0      0.26614 -3.35558e-05
+q_soln_mh5020: -2.42636e-17    -0.184283   -0.0818666            0      0.26614 -3.35558e-05
+[ INFO] [1530643193.493847007]: closest soln: 
+[ INFO] [1530643193.493927319]: -2.42636e-17    -0.184283   -0.0818666            0      0.26614 -3.35558e-05
+
+[ INFO] [1530643193.494127707]: computed tool origin for IK soln: 
+[ INFO] [1530643193.494200284]:     2.14495 -1.2307e-16     1.28505
+
+CB: q_vec_arm:            0    -0.173144   -0.0385933            0     0.211728 -3.35558e-05
+stuff_traj: start pt =            0    -0.173144   -0.0385933            0     0.211728 -3.35558e-05
+[ INFO] [1530643193.494375946]: stuffing trajectory
+traj pt: -2.42636e-17, -0.184283, -0.0818666, 0, 0.26614, -3.35558e-05, 
+arrival time: 0.544122
+enter 1 to send the trajectory command to move the arm: 
+enter anything else to decline this command; CAREFUL!!: 1
+enter 1 to get joint angles: 1
+CB: q_vec_arm:            0    -0.184274   -0.0818598            0     0.266126 -3.35558e-05
+[ INFO] [1530643201.102110736]: forward kin: 
+tool frame origin:      2.14495 -7.10244e-17      1.28508
+enter code for desired jog direction 
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+w_wrt_1[0],w_wrt_1[1]: 1.99995, 0.750084
+[ INFO] [1530643210.929573512]: beta,gamma = 0.358816 1.011918
+[ INFO] [1530643210.929650322]: eta, phi_elbow = 1.561175, 1.460139
+[ WARN] [1530643210.929910646]: q4 = 0.000000
+[ INFO] [1530643210.929972055]: num wrist solns: 4
+[ WARN] [1530643210.930024571]: ijnt = 3 out of range
+[ WARN] [1530643210.930067147]: ijnt = 3 out of range
+number of IK solutions: 2
+found 2 solution(s):
+q_soln_mh5020: -2.71175e-17    -0.200063    -0.120279            0     0.320335 -3.35558e-05
+q_soln_mh5020: -2.71175e-17    -0.200063    -0.120279            0     0.320335 -3.35558e-05
+[ INFO] [1530643210.930212857]: closest soln: 
+[ INFO] [1530643210.930287760]: -2.71175e-17    -0.200063    -0.120279            0     0.320335 -3.35558e-05
+
+[ INFO] [1530643210.930482184]: computed tool origin for IK soln: 
+[ INFO] [1530643210.930553610]:      2.14495 -1.35313e-16      1.18508
+
+CB: q_vec_arm:            0    -0.184274   -0.0818598            0     0.266126 -3.35558e-05
+stuff_traj: start pt =            0    -0.184274   -0.0818598            0     0.266126 -3.35558e-05
+[ INFO] [1530643210.930730828]: stuffing trajectory
+traj pt: -2.71175e-17, -0.200063, -0.120279, 0, 0.320335, -3.35558e-05, 
+arrival time: 0.542085
+enter 1 to send the trajectory command to move the arm: 
+enter anything else to decline this command; CAREFUL!!: 1
+enter 1 to get joint angles: 1
+CB: q_vec_arm:            0    -0.200059    -0.120278            0     0.320334 -3.35558e-05
+[ INFO] [1530643222.383663716]: forward kin: 
+tool frame origin:      2.14495 -7.71471e-17      1.18509
+enter code for desired jog direction 
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+w_wrt_1[0],w_wrt_1[1]: 1.99995, 0.650092
+[ INFO] [1530643228.041484078]: beta,gamma = 0.314282 1.036058
+[ INFO] [1530643228.041556996]: eta, phi_elbow = 1.527548, 1.460139
+[ WARN] [1530643228.041965853]: q4 = 0.000000
+[ INFO] [1530643228.042045627]: num wrist solns: 4
+[ WARN] [1530643228.042106889]: ijnt = 3 out of range
+[ WARN] [1530643228.042148958]: ijnt = 3 out of range
+number of IK solutions: 2
+found 2 solution(s):
+q_soln_mh5020:  -2.9972e-17    -0.220457    -0.153905            0     0.374359 -3.35558e-05
+q_soln_mh5020:  -2.9972e-17    -0.220457    -0.153905            0     0.374359 -3.35558e-05
+[ INFO] [1530643228.042371970]: closest soln: 
+[ INFO] [1530643228.042453054]:  -2.9972e-17    -0.220457    -0.153905            0     0.374359 -3.35558e-05
+
+[ INFO] [1530643228.042700258]: computed tool origin for IK soln: 
+[ INFO] [1530643228.042786767]:      2.14495 -1.47559e-16      1.08509
+
+CB: q_vec_arm:            0    -0.200059    -0.120278            0     0.320334 -3.35558e-05
+stuff_traj: start pt =            0    -0.200059    -0.120278            0     0.320334 -3.35558e-05
+[ INFO] [1530643228.043034291]: stuffing trajectory
+traj pt: -2.9972e-17, -0.220457, -0.153905, 0, 0.374359, -3.35558e-05, 
+arrival time: 0.540252
+enter 1 to send the trajectory command to move the arm: 
+enter anything else to decline this command; CAREFUL!!: 1
+enter 1 to get joint angles: 2
+CB: q_vec_arm:            0    -0.220447    -0.153901            0     0.374349 -3.35558e-05
+[ INFO] [1530643232.625574425]: forward kin: 
+tool frame origin:      2.14494 -8.32686e-17      1.08512
+enter code for desired jog direction 
+dx: 0,  dy: 1, dz: 2  :-0.1
+enter desired displacement, in m: w_wrt_1[0],w_wrt_1[1]: 2.09994, 0.650121
+[ INFO] [1530643235.085964677]: beta,gamma = 0.300231 0.965980
+[ INFO] [1530643235.086042056]: eta, phi_elbow = 1.626020, 1.460139
+[ WARN] [1530643235.086298584]: q4 = 0.000000
+[ INFO] [1530643235.086405543]: num wrist solns: 4
+[ WARN] [1530643235.086466581]: ijnt = 3 out of range
+[ WARN] [1530643235.086535304]: ijnt = 3 out of range
+number of IK solutions: 2
+found 2 solution(s):
+q_soln_mh5020: -3.13637e-17    -0.304585   -0.0554338            0     0.360019 -3.35558e-05
+q_soln_mh5020: -3.13637e-17    -0.304585   -0.0554338            0     0.360019 -3.35558e-05
+[ INFO] [1530643235.086736760]: closest soln: 
+[ INFO] [1530643235.086817757]: -3.13637e-17    -0.304585   -0.0554338            0     0.360019 -3.35558e-05
+
+[ INFO] [1530643235.087066277]: computed tool origin for IK soln: 
+[ INFO] [1530643235.087143532]:      2.24494 -1.53678e-16      1.08512
+
+CB: q_vec_arm:            0    -0.220447    -0.153901            0     0.374349 -3.35558e-05
+stuff_traj: start pt =            0    -0.220447    -0.153901            0     0.374349 -3.35558e-05
+[ INFO] [1530643235.087321362]: stuffing trajectory
+traj pt: -3.13637e-17, -0.304585, -0.0554338, 0, 0.360019, -3.35558e-05, 
+arrival time: 0.984669
+enter 1 to send the trajectory command to move the arm: 
+enter anything else to decline this command; CAREFUL!!: 1
+enter 1 to get joint angles: 1
+CB: q_vec_arm:          0  -0.304577 -0.0554308          0   0.360006          0
+[ INFO] [1530643266.788023326]: forward kin: 
+tool frame origin:      2.24494 -8.32673e-17      1.08514
+enter code for desired jog direction 
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+w_wrt_1[0],w_wrt_1[1]: 2.09994, 0.550142
+[ INFO] [1530643271.883018475]: beta,gamma = 0.256222 0.986313
+[ INFO] [1530643271.883096389]: eta, phi_elbow = 1.597183, 1.460139
+[ WARN] [1530643271.883436840]: q4 = 0.000000
+[ INFO] [1530643271.883539647]: num wrist solns: 4
+[ WARN] [1530643271.883609001]: ijnt = 3 out of range
+[ WARN] [1530643271.883664800]: ijnt = 3 out of range
+number of IK solutions: 2
+found 2 solution(s):
+q_soln_mh5020: -3.13632e-17  -0.328261 -0.0842709          0   0.412531          0
+q_soln_mh5020: -3.13632e-17  -0.328261 -0.0842709          0   0.412531          0
+[ INFO] [1530643271.883884759]: closest soln: 
+[ INFO] [1530643271.883975688]: -3.13632e-17  -0.328261 -0.0842709          0   0.412531          0
+
+[ INFO] [1530643271.884197261]: computed tool origin for IK soln: 
+[ INFO] [1530643271.884285734]:      2.24494 -1.59799e-16     0.985142
+
+CB: q_vec_arm:          0  -0.304577 -0.0554308          0   0.360006          0
+stuff_traj: start pt =          0  -0.304577 -0.0554308          0   0.360006          0
+[ INFO] [1530643271.884521716]: stuffing trajectory
+traj pt: -3.13632e-17, -0.328261, -0.0842709, 0, 0.412531, 0, 
+arrival time: 0.525244
+enter 1 to send the trajectory command to move the arm: 
+enter anything else to decline this command; CAREFUL!!: 1
+enter 1 to get joint angles: ^Z
+
