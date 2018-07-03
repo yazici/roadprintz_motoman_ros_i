@@ -1,0 +1,62 @@
+0) ROS computer (e.g. laptop) should have ethernet cable connected to switch,
+  and have IP addr manually set to: 192.168.1.20
+  
+1) generator power on.
+
+2) controller power switch to on
+    make sure pendant shows power is active;
+    wait ~ 1 minute for boot-up; 
+    
+3) DIAGNOSTIC:  test IP connection with:
+       ping 192.168.1.31
+       make sure get good response; else fix it
+       
+4) launch our own variation of Eric Marcil's launch code:
+   roslaunch motoman_mh50_support robot_interface_streaming_mh50.launch robot_ip:=192.168.1.31 controller:=dx200
+   
+ DEVIATIONS FROM ROS-I CODE:
+   note that our edits include:
+   *load yaml file for joint names
+   *load yaml file for controller_joint_names
+   *do NOT load yaml file for topic_list  (this matters!)
+   *commented out startup of action server
+   *edited: motoman/motoman_driver/src/joint_streaming_node.cpp,
+      motionInterface.init("", FS100_motion_port, true);
+    we set third parameter to "true"  (was hard-coded to "false")
+    
+5) DIAGNOSTIC: test that joint_states is valid:
+   rostopic echo /joint_states
+   
+6) DIAGNOSTIC: check robot status: 
+   check robot status: rostopic echo robot_status
+   
+7) enable the robot servos:
+    rosservice call robot_enable  
+    (green light on pendant should turn on, and robot_state will show servos enabled)
+    
+8) DIAGNOSTIC: test robot motion:
+  rosrun motoman_driver move_to_joint.py "[0,0,0,0,0,0]" 
+  (can change joint-angle values in list and move the robot this way)
+  
+9) DIAGNOSTIC: can test robot motion with a rostopic pub as follows:
+rostopic pub /joint_path_command   trajectory_msgs/JointTrajectory \
+"{joint_names: ['joint_1_s', 'joint_2_l', 'joint_3_u', 'joint_4_r', 'joint_5_b', 'joint_6_t'], \
+points: [ \
+{time_from_start: {secs: 0.0}, \
+positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+velocities: [0,0,0,0,0,0]},\
+{time_from_start: {secs: 1}, \
+positions: [0, 0, 0, 0, 0.5, 0],
+velocities: [0,0,0,0,0,0]}\
+]}" -1  
+
+for values of starting positions, copy/paste actual joint angles from
+  joint_states echo.  Edit 2nd positions vec to move robot.
+
+If robot joints move under move_to_joint command, then ROS-I is running;
+  can start using ros nodes to control robot via trajectory_msgs publications
+  to topic /joint_path_command
+  
+  
+  
+  
