@@ -1,0 +1,53 @@
+rosrun motoman_driver move_to_joint.py "[0.0, -1.3962488174438477, -1.3962637186050415, 1.917476038215682e-05, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, -1, -1, 0, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, 0, 0, 0, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, 0.8, 0.8, 0, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, 0.8, 1.5, 0, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, 1.3, 1.5, 0, 0.0, 0.0]"  NOT SAFE--WOULD HIT GROUND!!
+
+
+position: [0.0, 1.2754995822906494, 1.499993085861206, 0.0, 0.0, 0.0]
+see pic; flange is inches from touching ground (measures about 2")
+
+but tf says: - Translation: [4.324, 0.000, 0.181]
+
+I measure robot height as 45 3/4" = 1.162m (changed in URDF);
+
+recover: 
+rosrun motoman_driver move_to_joint.py "[0.0, 1.27, 1.5, 0, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, 1.0, 1.5, 0, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, 1.0, 0, 0, 0.0, 0.0]"  NOT SAFE!!
+
+rosrun motoman_driver move_to_joint.py "[0.0, 1.0, 1.5, 0, 0.0, 0.0]"
+
+
+A POSE FOR DRIVING:  see corresponding photo
+rosrun motoman_driver move_to_joint.py "[0.0, -1.35, 2.9, 0, 0.0, 0.0]"
+
+cab has mid console 14" x 40" (use for electronics)
+
+back to tuck pose:
+rosrun motoman_driver move_to_joint.py "[0.0, -1.35, 2.9, 0, 0.0, 0.0]"
+per model for elbow:     <limit lower="-2.79" upper="4.38" effort="2745.86" velocity="3.106"/>
+rosrun motoman_driver move_to_joint.py "[0.0, 0, 4, 0, 0.0, 0.0]"
+rosrun motoman_driver move_to_joint.py "[0.0, 0, 3.5, 0, 0.0, 0.0]"
+rosrun motoman_driver move_to_joint.py "[0.0, 0.5, 4, 0, 0.0, 0.0]"
+rosrun motoman_driver move_to_joint.py "[0.0, 1, 4, 0, 0.0, 0.0]"
+
+rosrun motoman_driver move_to_joint.py "[0.0, 0.5, 3.59538197517395, 0.0, 0.0, 0.0]"
+//lower the elbow before opening up:  DOES NOT LIKE J3 = 4 cmd
+rosrun motoman_driver move_to_joint.py "[0.0, 1, 3.595, 0.0, 0.0, 0.0]"
+//open up elbow:
+rosrun motoman_driver move_to_joint.py "[0.0, 1, 2, 0.0, 0.0, 0.0]"
+rosrun motoman_driver move_to_joint.py "[0.0, 1, 1.5, 0.0, 0.0, 0.0]"
+tuck (for lifting):
+ran this cmd next--looked good;
+rosrun motoman_driver move_to_joint.py "[0.0, -1.3962488174438477, -1.3962637186050415, 0, 0.0, 0.0]"
+

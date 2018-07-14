@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>test_jog_cartesian</name>
+  <name>roadprintz_launch</name>
   <version>0.0.0</version>
-  <description>The test_jog_cartesian package</description>
+  <description>The roadprintz_launch package</description>
   
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -40,19 +40,8 @@
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <buildtool_depend>catkin_simple</buildtool_depend>
-  <build_depend>trajectory_msgs</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>tf</build_depend>
-      
-<build_depend>sensor_msgs</build_depend>
-<build_depend>mh5020_fk_ik</build_depend>
-<build_depend>roscpp</build_depend>
-  <run_depend>trajectory_msgs</run_depend>
-<run_depend>sensor_msgs</run_depend>
-<run_depend>geometry_msgs</run_depend>
-<run_depend>tf</run_depend>
-<run_depend>mh5020_fk_ik</run_depend>
-<run_depend>roscpp</run_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>roscpp</run_depend>
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- You can specify that this package is a metapackage here: -->

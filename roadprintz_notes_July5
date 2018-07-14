@@ -1,0 +1,109 @@
+notes 7/5/2018:
+
+start-up w/ robot in "crouch" position;
+joint states:
+name: ['joint_1_s', 'joint_2_l', 'joint_3_u', 'joint_4_r', 'joint_5_b', 'joint_6_t']
+position: [-0.039017729461193085, -1.5455671548843384, -1.356007695198059, 0.0, 0.41252580285072327, 0.0]
+
+----------
+unfolded arm w/:
+rosrun motoman_driver move_to_joint.py "[0,0,0,0,0,0]"
+
+move from crouch pose was smooth and coordinated.
+
+result is ~perfect:
+name: ['joint_1_s', 'joint_2_l', 'joint_3_u', 'joint_4_r', 'joint_5_b', 'joint_6_t']
+position: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+velocity: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+rosrun test_jog_cartesian test_jog_cartesian
+enter 1 to get joint angles: 1
+[ INFO] [1530798017.782000037]: CB: q_vec_arm: 0 0 0 0 0 0
+
+[ INFO] [1530798017.782140101]: forward kin: 
+tool frame origin:        1.945 -4.04133e-17        1.785
+
+enter code 2 for dz:
+enter -0.5 to descend half a meter:
+soln: -1.41669e-17 -0.0121122  -0.264912          0   0.277024          0
+fk: 1.945 -9.85841e-17        1.285  (consistent)
+
+execute:
+result: tool frame origin:       1.945 -7.1029e-17     1.28501
+
+-------------repeat another -0.5 m in z dir:
+soln: -2.99076e-17 -0.147571 -0.412925         0  0.560494         0
+computed tool origin for IK soln: 
+[ INFO] [1530798274.877425492]:        1.945 -1.59815e-16     0.785008
+
+execute:
+resulting joint angles: q_vec_arm:         0 -0.147567 -0.412922         0  0.560478         0
+fk: tool frame origin:        1.945 -1.01644e-16      0.78502
+
+BUT: this did NOT happen!!  flange hardly descended.
+
+debug this...
+
+---------------------
+try new fnc: command joints, but display FK:
+
+rosrun test_jog_cartesian  test_jog_joints2
+
+enter 1 to capture joint angles: 1
+CB: q_vec_arm:         0         0 -0.499998         0         0         0
+fwd kin toolflange origin:       1.7702 -9.39667e-17     0.910408
+
+enter 1 to capture joint angles: 1
+CB: q_vec_arm: 0 0 0 0 0 0
+fwd kin toolflange origin:        1.945 -4.04133e-17        1.785
+
+cmd jnt2 (shoulder) by -0.5; MOVES BACKWARD
+CB: q_vec_arm:         0 -0.499991         0         0         0         0
+fwd kin toolflange origin:      2.32153 -1.02586e-16     0.769645
+WRONG SIGN;  TOOLFLANGE MOVED UP, NOT DOWN
+
+Move base; positive rotation is "UP":
+CB: q_vec_arm: 0.499995 0 0 0 0 0
+fwd kin toolflange origin:   1.7069 0.932474    1.785
+
+POSITIVE FOREARM ROTATION: does NOT point "out"; points from wrist towards elbow;
+
+WRIST BEND: points straight out at q_bend = +pi/2
+
+TOOLFLANGE ROT: positive rotation is INTO flange, NOT OUT FROM FLANGE FACE
+
+CB: q_vec_arm: 0.706999 0 0 0 0 0
+fwd kin toolflange origin: 1.47881 1.26338   1.785
+
+rot base 45 deg:
+CB: q_vec_arm: 0.785343 0 0 0 0 0
+fwd kin toolflange origin:  1.3754 1.37525   1.785
+fwd kin orientation:
+0.707146     0.707068  8.65908e-17
+0.707068    -0.707146 -8.66004e-17
+0  1.22465e-16           -1
+
+move shoulder +0.5--robot leans forward;
+CB: q_vec_arm:        0 0.499991        0        0        0        0
+fwd kin toolflange origin:     1.12778 3.09512e-18     2.49555
+
+(this is very wrong--fix motion signs)
+
+move elbow to +0.5 w/ shoulder also +0.5:
+CB: q_vec_arm:        0 0.499991 0.499998        0        0        0
+fwd kin toolflange origin:    0.486293 4.10374e-17     3.11519
+fwd kin orientation: 
+0.540312 -5.15249e-17     0.841465
+ 5.15249e-17           -1 -9.43169e-17
+    0.841465  9.43169e-17    -0.540312
+
+-----------------retest cartesian jog after hack negation of q2-----------
+rosrun test_jog_cartesian test_jog_cartesian
+
+NOW LOOKS GOOD (after negating J2 for both FK and IK)
+wrist bend looks consistent;
+J4 and J6 not confirmed
+
+
+           
+

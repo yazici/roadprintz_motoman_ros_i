@@ -32,7 +32,8 @@ catkin_simple()
 # Executables: uncomment the following and edit arguments to compile new nodes
 # may add more of these lines for more nodes from the same package
 cs_add_executable(test_jog_cartesian src/test_jog_cartesian.cpp)
-
+cs_add_executable(test_jog_joints2 src/test_jog_joints.cpp)
+cs_add_executable(test_move_cartesian src/test_move_cartesian.cpp)
 #the following is required, if desire to link a node in this package with a library created in this same package
 # edit the arguments to reference the named node and named library within this package
 # target_link_library(example my_lib)

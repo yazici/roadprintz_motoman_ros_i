@@ -1,9 +1,17 @@
+instructions for launch of hardware interface to Motoman/ROS controller:
+(for corresponding Gazebo simulation launch, see package motoman_mh5020_description, 
+ roslaunch motoman_mh5020_description motoman_MH5020_on_truck_gazebo_sim.launch )
+ 
+ 
+
 0) ROS computer (e.g. laptop) should have ethernet cable connected to switch,
   and have IP addr manually set to: 192.168.1.20
   
 1) generator power on.
 
-2) controller power switch to on
+
+2) w/ pendant switch position = "remote" (and check E-stop is not depressed)
+    controller power switch to on
     make sure pendant shows power is active;
     wait ~ 1 minute for boot-up; 
     
@@ -12,7 +20,10 @@
        make sure get good response; else fix it
        
 4) launch our own variation of Eric Marcil's launch code:
-   roslaunch motoman_mh50_support robot_interface_streaming_mh50.launch robot_ip:=192.168.1.31 controller:=dx200
+   NEW: 7/13/18:
+   roslaunch roadprintz_launch roadprintz.launch  robot_ip:=192.168.1.31 controller:=dx200
+   
+   THIS SHOULD SHOW RVIZ WITH POSE IN SYNC WITH ROBOT
    
     (may ignore 2 errors complaining of topic_list parameter not found)
    
@@ -70,6 +81,9 @@ If robot joints move under move_to_joint command, then ROS-I is running;
   
 11) CARTESIAN diagnostic/utility:
   rosrun test_jog_cartesian test_jog_cartesian
+  
+12) new 7/13:
+  rosrun test_jog_cartesian test_move_cartesian
   
   
   

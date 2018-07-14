@@ -1,0 +1,19 @@
+plan 7/13/18:
+
+
+
+*get Cartesian move working in Gazebo for robot on truck
+  --create/test node w/ truck-mount transform
+  --create launch file, including rviz
+  
+*test rviz display with robot on truck:
+  --create ROS-I version of Rviz display, robot on truck
+  --test w/ joint-space jog moves
+  --test w/ cartesian-space jog moves w/rt robot base frame
+  
+*get Cartesian move working on truck w/rt truck frame
+  --move pure x, y, z w/ fixed wrist orientation
+  
+---Wednesday--
+*get paintfile player working in Gazebo
+*get paintfile player working on truck

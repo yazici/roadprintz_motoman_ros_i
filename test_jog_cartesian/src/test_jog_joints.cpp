@@ -18,6 +18,9 @@
 #include <Eigen/Dense>
 
 
+//the following includes velocity limits--should grab these from URDF/parameter server
+#include <mh5020_fk_ik/mh5020_kinematics.h>
+
 using namespace std;
 #define VECTOR_DIM 6 // e.g., a 6-dof vector
 const double dt_traj = 0.02; // time step for trajectory interpolation
@@ -27,7 +30,7 @@ Eigen::VectorXd g_q_vec_arm_Xd;
 vector<int> g_arm_joint_indices;
 vector<string> g_ur_jnt_names;
 //TEST: deliberately limit joint velocities to very small values
-double g_qdot_max_vec[] = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1}; //put real vel limits here
+//double g_qdot_max_vec[] = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1}; //put real vel limits here
 int ans;
 
 void map_arm_joint_indices(vector<string> joint_names) {
@@ -196,11 +199,27 @@ int main(int argc, char** argv)
 
     //get current pose of arm:  
     cout << "current pose:" << g_q_vec_arm_Xd.transpose() << endl;
+    Eigen::Vector3d O_current, O_desired;
+    Eigen::Affine3d A_fwd_kin;
+    
+    Eigen::Affine3d a_tool;
+    a_tool.linear() << 1, 0, 0,
+            0, 1, 0,
+            0, 0, 1;
+    a_tool.translation() << 0.0,
+            0.0,
+            0.0;
+
+    MH5020_fwd_solver mh5020_fwd_solver;
+    Eigen::VectorXd q_offsets_vecxd;
+    q_offsets_vecxd.resize(NJNTS);
+    for (int i = 0; i < NJNTS; i++)
+        q_offsets_vecxd[i] = DH_q_offsets[i];
     
     //q_pre_pose is initialized to all zeros
     int jnt=5;
     double qval;
-    while(jnt>=0) {
+    while((jnt>=0)&&(jnt<6)) {
         cout<<"enter jnt num, 0 through 5: ";
         cin>>jnt;
         cout<<"enter jnt angle: ";
@@ -215,9 +234,15 @@ int main(int argc, char** argv)
         cout<<"enter 1 to send the trajectory command to move the arm: CAREFUL!!: ";
         cin>>ans;
         pub.publish(des_trajectory);
-        
+        cout<<"enter 1 to capture joint angles: ";
+        cin>>ans;        
         ros::spinOnce();
-        cout << "arm is at: " << g_q_vec_arm_Xd.transpose() << endl;        
+        cout << "arm is at: " << g_q_vec_arm_Xd.transpose() << endl;     
+        //compute fwd kin:
+        A_fwd_kin = mh5020_fwd_solver.fwd_kin_solve(g_q_vec_arm_Xd);
+        ROS_INFO_STREAM("fwd kin toolflange origin: "<<A_fwd_kin.translation().transpose()<<endl);
+        ROS_INFO_STREAM("fwd kin orientation: "<<endl);
+        ROS_INFO_STREAM(A_fwd_kin.linear()<<endl);
     }
 
     return 0;

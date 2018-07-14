@@ -1,0 +1,48 @@
+IK output interpretation:
+
+CB: q_vec_arm:            0    -0.165061    0.0630445            0      0.10201 -3.35558e-05
+tool frame origin:      2.14497 -5.26586e-17      1.58502
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+
+found 2 solution(s):
+q_soln_mh5020:  -1.8555e-17    -0.166721   0.00964629            0     0.157068 -3.35558e-05
+q_soln_mh5020:  -1.8555e-17    -0.166721   0.00964629            0     0.157068 -3.35558e-05
+(why are these identical???)
+
+suspicious that J5 is pi/20.  expected dq5 same magnitude as dJ2 ???
+
+[ INFO] [1530643022.175229438]: computed tool origin for IK soln: 
+[ INFO] [1530643022.175313295]:      2.14497 -9.85817e-17      1.48502  (this is consistent: dz=-.1)
+
+traj pt: -1.8555e-17, -0.166721, 0.00964629, 0, 0.157068, -3.35558e-05,  (consistent w/ soln)
+
+enter 1 to get joint angles: 1
+CB: q_vec_arm:            0    -0.166714   0.00964395            0      0.15706 -3.35558e-05
+(consistent--robot moved to commanded pose)
+
+forward kin: 
+tool frame origin:      2.14496 -5.87813e-17      1.48503
+(consistent w/ command and expectation)
+-----------------------
+2nd move:
+dx: 0,  dy: 1, dz: 2  :2
+enter desired displacement, in m: -0.1
+q_soln_mh5020: -2.14095e-17    -0.173152   -0.0385987            0      0.21174 -3.35558e-05
+(2 of these identical)
+[ INFO] [1530643153.606279398]: computed tool origin for IK soln: 
+[ INFO] [1530643153.606351595]:      2.14496 -1.10827e-16      1.38503  (consistent w/ request)
+
+[ INFO] [1530643153.606535990]: stuffing trajectory
+traj pt: -2.14095e-17, -0.173152, -0.0385987, 0, 0.21174, -3.35558e-05, 
+after move:
+CB: q_vec_arm:            0    -0.173144   -0.0385933            0     0.211728 -3.35558e-05
+[ INFO] [1530643186.309228719]: forward kin: 
+tool frame origin:     2.14495 -6.4903e-17     1.38505  (consistent w/ plan)
+
+after this, made some errors entering the motion codes (0,1,2);
+I/O got out of sync
+
+
+
+

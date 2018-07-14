@@ -1,0 +1,30 @@
+
+<!--
+  Manipulator specific version of 'robot_interface_streaming.launch'.
+  Modified from Eric Mercil for MH5020 on truck
+  Defaults provided for mh5020:
+   - 6 joints
+
+  Usage:
+    roadprintz.launch robot_ip:=<value> controller:=<dx200>
+-->
+<launch>
+	<arg name="robot_ip" />
+	
+  <!-- controller: Controller name (dx200) -->
+  <arg name="controller"/>
+
+        <rosparam command="load" file="$(find roadprintz_launch)/config/joint_names_mh5020.yaml" />
+        <rosparam command="load" file="$(find roadprintz_launch)/config/other_joint_names_mh5020.yaml" />
+        <!-- add our URDF of MH5020 on truck: -->
+        <param name="robot_description"
+	 command="$(find xacro)/xacro --inorder '$(find motoman_mh5020_description)/urdf/robot_on_truck_description.xacro'" />
+	 <!-- need robot_state_publisher for rviz-->
+     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+	<include file="$(find motoman_driver)/launch/robot_interface_streaming_$(arg controller).launch">
+		<arg name="robot_ip"   value="$(arg robot_ip)" />
+	</include>
+	
+	<!-- start up rviz -->
+	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find motoman_mh5020_description)/rviz/MH5020_robot_on_truck.rviz"/> 
+</launch>

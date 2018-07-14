@@ -162,7 +162,7 @@ void stuff_trajectory(std::vector<Eigen::VectorXd> qvecs, trajectory_msgs::Joint
     }
 }
 
-
+ros::Publisher pub; 
 int main(int argc, char** argv) 
 {
     // ROS set-ups:
@@ -171,7 +171,21 @@ int main(int argc, char** argv)
     ros::NodeHandle nh; // create a node handle; need to pass this to the class constructor
     
     //this is the correct topic and message type for Motoman streaming
-    ros::Publisher pub = nh.advertise<trajectory_msgs::JointTrajectory>("/joint_path_command", 1); 
+    
+    
+    cout<<"enter 1 for simu, 2 for ROS-I: ";
+    cin>>ans;
+    if (ans==1) {
+        ROS_INFO("will publish to /MH5020/arm_controller/command");
+        ros::Publisher pub_simu = nh.advertise<trajectory_msgs::JointTrajectory>("/MH5020/arm_controller/command", 1);
+        pub = pub_simu;
+    }
+    else if (ans==2) {
+        //this is the correct topic and message type for Motoman streaming
+        ros::Publisher pub_rosi = nh.advertise<trajectory_msgs::JointTrajectory>("/joint_path_command", 1);
+        ROS_INFO("will publish to /joint_path_command");
+        pub = pub_rosi;
+        }    
      Eigen::VectorXd q_pre_pose;
     Eigen::VectorXd q_vec_arm;
     g_q_vec_arm_Xd.resize(VECTOR_DIM);
