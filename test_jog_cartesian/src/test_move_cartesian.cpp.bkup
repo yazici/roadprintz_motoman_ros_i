@@ -311,17 +311,17 @@ int main(int argc, char** argv) {
         ROS_INFO("waiting for joint states...");
     }
 
-    //ROS_INFO("getting transform, world frame to robot base frame: ...not really yet");
+    ROS_INFO("getting transform, world frame to robot base frame: ...not really yet");
     tf::TransformListener tfListener;
     bool tferr = true;
-    ROS_INFO("waiting for tf between rear_wheel_frame and robot's base_link...");
+    ROS_INFO("waiting for tf between world and robot's base_link...");
     tf::StampedTransform tfBaseLinkWrtTruck;
     while (tferr) {
         tferr = false;
         try {
             //try to lookup transform, link2-frame w/rt base_link frame; this will test if
             // a valid transform chain has been published from base_frame to link2
-            tfListener.lookupTransform("rear_wheel_frame", "base_link", ros::Time(0), tfBaseLinkWrtTruck);
+            tfListener.lookupTransform("world", "base_link", ros::Time(0), tfBaseLinkWrtTruck);
         } catch (tf::TransformException &exception) {
             ROS_WARN("%s; retrying...", exception.what());
             tferr = true;
@@ -390,6 +390,12 @@ int main(int argc, char** argv) {
     ROS_WARN("moving wrist to desired orientation w/rt world: ");
     bool move_success = move_to_jspace_point(q_soln, 3.0);
 
+
+
+
+    //return 0; //TEST TEST TEST
+
+    //q_pre_pose is initialized to all zeros
     double qval;
 
     while (ros::ok()) {
@@ -404,9 +410,10 @@ int main(int argc, char** argv) {
         //q_vec_wsn_model[1] = -q_vec_wsn_model[1];
         A_flange_wrt_base_link = mh5020_fwd_solver.fwd_kin_solve(q_vec_wsn_model); //fwd_kin_solve
         A_flange_wrt_truck = affineBaseLinkWrtTruck*A_flange_wrt_base_link;
-        ROS_INFO("computed flange pose w/rt rear_wheel_frame: ");
+        ROS_INFO("computed flange pose w/rt world: ");
         xform_utils.printAffine(A_flange_wrt_truck);
 
+        //Eigen::Affine3d A_fwd_URDF = A_fwd_DH*a_tool;
         O_current = A_flange_wrt_truck.translation();
         std::cout << "tool frame origin from FK: " << O_current.transpose() << std::endl;
 

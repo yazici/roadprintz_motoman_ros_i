@@ -1,0 +1,102 @@
+plan:
+*compute/execute Cartesian moves;
+*explore singularities
+*test paint files
+
+---
+ add camera;
+ convert 2D images to pointcloud (w/ assumed z=0)
+ 
+ A_tool/base = base^A_tool
+ A_base/world = world^A_base
+ 
+ A_tool/world = world^A_tool =  world^A_base * base^A_tool
+ 
+ (A_base/world)^(-1) * A_tool/world = A_tool/base
+ 
+ ---
+ key pose:
+ q = 0, 0.117, -0.668, 0, 1.571, 0
+ --> rosrun tf tf_echo world tool0
+ - Translation: [2.837, -0.000, 0.249]
+- Rotation: in Quaternion [1.000, 0.000, 0.000, 0.000]
+
+so, toolflange is about 25cm above ground (which is about right for 6" gun and 4" clearance)
+toolflange points down
+wrist bend joint is antiparallel to world y axis
+
+This pose is a singularity w/ toolflange joint parallel to forearm rotation joint
+
+NOTE: w/ assigned truck pose, base_link of robot is 1.250 m behind the world frame
+truck-link frame is centered under front wheels;
+
+Ford F550XL wheelbase spec: 145.3" = 3.69m
+
+This did not fit well with truck model;
+
+ran:
+roslaunch truck_model static_transforms.launch
+
+with: <node pkg="tf" type="static_transform_publisher" name="rear_wheel_frame" args="4.28 0 0 0 0 0 1 truck_link rear_wheel_frame 100" />
+
+So, my truck model has rear-wheel frame 4.28m behind the front-wheel frame;
+
+results in: rosrun tf tf_echo base_link rear_wheel_frame
+- Translation: [0.136, 0.000, -1.508]
+- Rotation: in Quaternion [0.000, -0.383, 0.000, 0.924]
+            in RPY (radian) [0.000, -0.785, 0.000]
+
+xform between rear_wheel_frame and robot base_link:
+<node pkg="tf" type="static_transform_publisher" name="rear_wheel_frame" args="0.136 0.000 -1.508 0.000 -0.785 0.000 base_link rear_wheel_frame 100" />
+
+rosrun tf tf_echo rear_wheel_frame base_link
+- Translation: [0.970, 0.000, 1.163]
+- Rotation: in Quaternion [-0.000, 0.382, -0.000, 0.924]
+            in RPY (radian) [-0.000, 0.785, -0.000]
+            in RPY (degree) [-0.000, 44.977, -0.000]
+            
+GET VALUES FROM ACTUAL VEHICLE!!
+
+control robot motion w/rt rear_wheel_frame
+
+singularity w/rt rear_wheel_frame: rosrun tf tf_echo rear_wheel_frame tool0
+- Translation: [2.557, -0.000, 0.250]
+- Rotation: in Quaternion [1.000, 0.000, 0.000, 0.000]
+            in RPY (radian) [3.142, -0.000, 0.000]
+(note elevation of 25cm is about right for painting gun)
+
+q_vec_arm: -2.27674e-06    0.117172   -0.668012 -0.00606847     1.57053  0.00607008
+(note wrist angle of 1.57--> J6 parallel to J4)
+
+therefore, WATCH OUT for values of x near 2.56m (w/rt rear_wheel_frame)
+
+at: 0    0.728147   -0.854547 0     2.36804 0
+--> tool flange ~touching ground directly under J2;
+
+------------------
+get cartesian planner/painter working:
+previous roadprintz repo, mh5020_planner:
+ should run: roslaunch mh5020_planner mh5020_cart_move_as.launch
+ main node: mh5020_cart_move_as:
+ 
+INITS:  
+
+ mh5020_planner/src/robot_specific_names.h:
+   this sets the topic name for publication to joint command streamer;
+   have to choose: /MH5020/arm_controller/command (simu) or /joint_path_command (ROS-I)
+   
+   
+DID THIS: (simu arg--> topic remapping or not for Gazebo vs Motoman)
+roslaunch mh5020_planner mh5020_cart_move_as.launch simu:=true
+
+rosrun paintfile_player paintfile_player y_stripe_singularity.cpf 
+
+ 
+  
+
+
+
+            
+
+
+
