@@ -34,7 +34,7 @@ int ans;
 
 double g_travel_pose[] = {0.0, -1.35, 2.9, 0, 0.0, 0.0};
 double g_trav_to_home_1[] = {0.0, 0, 3.5, 0, 0.0, 0.0};
-double g_trav_to_home_2[] = {0.0, 1, 3.595, 0.0, 0.0, 0.0};
+double g_trav_to_home_2[] = {0.0, 1, 3.5, 0.0, 0.0, 0.0};
 double g_trav_to_home_3[] = {0.0, 1, 1.5, 0.0, 0.0, 0.0};
 double g_home_pose[] = {0,0,0,0,0,0};
 double g_tuck_pose[] = {0.0, -1.3962488174438477, -1.3962637186050415, 0, 0.0, 0.0};

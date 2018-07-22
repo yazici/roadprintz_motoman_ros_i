@@ -91,6 +91,40 @@ roslaunch mh5020_planner mh5020_cart_move_as.launch simu:=true
 
 rosrun paintfile_player paintfile_player y_stripe_singularity.cpf 
 
+truck dims:
+Top of platform is 34" wide. 
+Robot mount (towards cab) to end of platform is 103".  This is the area we have to mount everything but the robot.
+
+103": 
+Total length from end of frame at rear to end of platform is 126": 
+
+169" wheelbase: 2.616m  x 34": 0.864
+STL model has: 168.5 (looks good)
+
+-----------------
+camera: roslaunch usb_cam usb_cam-test.launch
+http://wiki.ros.org/usb_cam
+
+---equipment dims:
+controller: 600mm wide (at face w/ pwr switch) x 520 deep (+need room for pendant and switches) x 730mm high
+better: 800 x 650 x 1000
+
+generator: 31" x 25"w x 27.5"h = 0.79 x 0.64 x 0.7    0.79 0.64 0.7
+starter switch at one end of length; power switch 90deg away;
+
+paint compressor: base 12"x12" by 14" high: 0.3 0.3 0.36
+
+battery: 7" x 10" x 8":  0.18 0.254 0.2
+
+air compressor:  
+battery:
+paint pails:  about 12" diam and 15" height: 0.3m diam, 0.38m height
+
+MDAS is 18" x 24"
+
+
+
+
  
   
 

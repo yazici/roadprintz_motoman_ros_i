@@ -11,10 +11,13 @@
        ping 192.168.1.31
        make sure get good response; else fix it
        
-4) launch our own variation of Eric Marcil's launch code:
+4)ORIG/DEPRECATED: launch our own variation of Eric Marcil's launch code:
    roslaunch motoman_mh50_support robot_interface_streaming_mh50.launch robot_ip:=192.168.1.31 controller:=dx200
    
     (may ignore 2 errors complaining of topic_list parameter not found)
+    
+  BETTER:  use custom launchfile that also loads our mh5020 model, starts up rviz, and robot_state_publisher:
+  `roslaunch roadprintz_launch roadprintz.launch robot_ip:=192.168.1.31 controller:=dx200`
    
  DEVIATIONS FROM ROS-I CODE:
    note that our edits include:
@@ -34,13 +37,25 @@
    
 7) enable the robot servos:
     rosservice call robot_enable  
+
+
     (green light on pendant should turn on, and robot_state will show servos enabled)
+    
+7.5) UNFOLD THE ROBOT from its travel pose FIRST, if there are clearance concerns
+(requires 10' clearance for the following execution, which is minimal for unfolding from travel pose):
+`rosrun canned_moves travel_pose_to_home_pose`
+
+re-fold with:
+`rosrun canned_moves home_pose_to_travel_pose`
+
     
 8) DIAGNOSTIC: test robot motion:
   rosrun motoman_driver move_to_joint.py "[0,0,0,0,0,0]" 
   (can change joint-angle values in list and move the robot this way)
   
 9) DIAGNOSTIC: can test robot motion with a rostopic pub as follows:
+note: assumes robot starts from home pose (all q_i=0); following will simply bend the wrist
+
 rostopic pub /joint_path_command   trajectory_msgs/JointTrajectory \
 "{joint_names: ['joint_1_s', 'joint_2_l', 'joint_3_u', 'joint_4_r', 'joint_5_b', 'joint_6_t'], \
 points: [ \
@@ -70,6 +85,14 @@ If robot joints move under move_to_joint command, then ROS-I is running;
   
 11) CARTESIAN diagnostic/utility:
   rosrun test_jog_cartesian test_jog_cartesian
+  
+----start up ROS-I independent code for Motoman MH5020---
+see mh5020_planner/README
+
+FOLDED POSE:
+rosrun motoman_driver move_to_joint.py "[0,-1.5,-1.5,0,0,0]" 
+  
+
   
   
   

@@ -33,9 +33,9 @@ double g_qdot_max_vec[] = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1}; //put real vel limits 
 int ans;
 
 double g_travel_pose[] = {0.0, -1.35, 2.9, 0, 0.0, 0.0};
-double g_trav_to_home_1[] = {0.0, 0, 3.5, 0, 0.0, 0.0};
-double g_trav_to_home_2[] = {0.0, 1, 3.595, 0.0, 0.0, 0.0};
-double g_trav_to_home_3[] = {0.0, 1, 1.5, 0.0, 0.0, 0.0};
+double g_trav_to_home_1[] = {0.0, 0, 3.5, 0, 0.0, 0.0}; //dont know why robot went to 3.59 for jnt 3
+double g_trav_to_home_2[] = {0.0, 1, 3.5, 0.0, 0.0, 0.0}; //watch out for elbow jnt limit
+double g_trav_to_home_3[] = {0.0, 1, 1.5, 0.0, 0.0, 0.0}; //outstretched...OK
 double g_home_pose[] = {0,0,0,0,0,0};
 double g_tuck_pose[] = {0.0, -1.3962488174438477, -1.3962637186050415, 0, 0.0, 0.0};
 
@@ -265,6 +265,7 @@ int main(int argc, char** argv)
     }
     des_path.push_back(q_vec_arm_pose);   
     
+    /* halt after home_2:
     //g_trav_to_home_1
     for (int i=0;i<VECTOR_DIM;i++) {
         q_vec_arm_pose[i] = g_trav_to_home_1[i];
@@ -276,14 +277,33 @@ int main(int argc, char** argv)
         q_vec_arm_pose[i] = g_travel_pose[i];
     }
     des_path.push_back(q_vec_arm_pose); 
-
+*/
     stuff_trajectory(des_path, des_trajectory); //convert path to traj    
     des_trajectory.header.stamp = ros::Time::now(); //update time stamp to avoid rejection        
     pub.publish(des_trajectory);
     ros::spinOnce();
-    ros::Duration(3).sleep();
-          
+    ros::Duration(37).sleep();
     
+    ros::spinOnce(); //get the new joint angles
+    //complete the move...
+    des_path.clear();
+    des_path.push_back(g_q_vec_arm_Xd); //start from current pose      
+     //g_trav_to_home_1
+    for (int i=0;i<VECTOR_DIM;i++) {
+        q_vec_arm_pose[i] = g_trav_to_home_1[i];
+    }
+    des_path.push_back(q_vec_arm_pose); 
+
+    //g_travel_pose
+    for (int i=0;i<VECTOR_DIM;i++) {
+        q_vec_arm_pose[i] = g_travel_pose[i];
+    }
+    des_path.push_back(q_vec_arm_pose);          
+     stuff_trajectory(des_path, des_trajectory); //convert path to traj    
+    des_trajectory.header.stamp = ros::Time::now(); //update time stamp to avoid rejection        
+    pub.publish(des_trajectory);
+    ros::spinOnce();
+    ros::Duration(3).sleep();   
  
 
     return 0;
