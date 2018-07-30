@@ -91,9 +91,13 @@ see mh5020_planner/README
 
 FOLDED POSE:
 rosrun motoman_driver move_to_joint.py "[0,-1.5,-1.5,0,0,0]" 
+
+CAMERA_POSE:
+rosrun motoman_driver move_to_joint.py "[0,0,0.785,-0.05,0,0]" 
   
 
+HOME_POSE:
+rosrun motoman_driver move_to_joint.py "[0,0,0,0,0,0]"
   
-  
-  
+rosrun motoman_driver move_to_joint.py "[-0.18843340873718262, 0.6, 0.5597079396247864, -0.22231216728687286, 0.9266011118888855, 1.8837571144104004]"  
   
