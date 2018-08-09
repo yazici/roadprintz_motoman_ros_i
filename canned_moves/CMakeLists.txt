@@ -33,6 +33,7 @@ catkin_simple()
 # may add more of these lines for more nodes from the same package
 cs_add_executable(travel_pose_to_home_pose src/travel_pose_to_home_pose.cpp)
 cs_add_executable(home_pose_to_travel_pose src/home_pose_to_travel_pose.cpp)
+cs_add_executable(home_pose_to_camera_pose src/home_pose_to_camera_pose.cpp)
 
 #the following is required, if desire to link a node in this package with a library created in this same package
 # edit the arguments to reference the named node and named library within this package

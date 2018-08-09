@@ -18,6 +18,13 @@
     
   BETTER:  use custom launchfile that also loads our mh5020 model, starts up rviz, and robot_state_publisher:
   `roslaunch roadprintz_launch roadprintz.launch robot_ip:=192.168.1.31 controller:=dx200`
+  
+  Start up Logitech camera driver: 
+  `roslaunch usb_cam logitech.launch`
+  
+  Start up relay driver:
+  type:  `sudo -s`
+  then: `rosrun usb_relay ros_relay_bridge.py`
    
  DEVIATIONS FROM ROS-I CODE:
    note that our edits include:
