@@ -16,7 +16,10 @@
    
     (may ignore 2 errors complaining of topic_list parameter not found)
     
-  BETTER:  use custom launchfile that also loads our mh5020 model, starts up rviz, and robot_state_publisher:
+    
+    
+-------------------start ROS interface, USB cam driver, and relay driver---------------   
+ 4) BETTER:  use custom launchfile that also loads our mh5020 model, starts up rviz, and robot_state_publisher:
   `roslaunch roadprintz_launch roadprintz.launch robot_ip:=192.168.1.31 controller:=dx200`
   
   Start up Logitech camera driver: 
@@ -25,6 +28,9 @@
   Start up relay driver:
   type:  `sudo -s`
   then: `rosrun usb_relay ros_relay_bridge.py`
+-------------------------------------------------------   
+   
+   
    
  DEVIATIONS FROM ROS-I CODE:
    note that our edits include:
@@ -105,6 +111,8 @@ rosrun motoman_driver move_to_joint.py "[0,0,0.785,-0.05,0,0]"
 
 HOME_POSE:
 rosrun motoman_driver move_to_joint.py "[0,0,0,0,0,0]"
+
+rosrun motoman_driver move_to_joint.py "[-0.5,0,0,0,0,0]"
   
 rosrun motoman_driver move_to_joint.py "[-0.18843340873718262, 0.6, 0.5597079396247864, -0.22231216728687286, 0.9266011118888855, 1.8837571144104004]"  
   
