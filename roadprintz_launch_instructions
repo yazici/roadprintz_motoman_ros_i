@@ -28,6 +28,12 @@
   Start up relay driver:
   type:  `sudo -s`
   then: `rosrun usb_relay ros_relay_bridge.py`
+  
+  roslaunch mh5020_planner mh5020_cart_move_as.launch simu:=false
+
+    rosrun paintfile_gui_tool paintfile_gui_tool
+
+rosservice call /robot_enable
 -------------------------------------------------------   
    
    
